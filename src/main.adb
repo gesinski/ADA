@@ -5,7 +5,7 @@ with Ada.Numerics.Discrete_Random;
 
 procedure Simulation is
 
-   ----GLOBAL VARIABLES---
+   -----GLOBAL VARIABLES----
 
    Number_Of_Fishermen: constant Integer := 5;
    Number_Of_Coolers: constant Integer := 3;
