@@ -52,7 +52,7 @@ procedure Simulation is
 
    -- Fisherman Task Body --
    task body Fisherman is
-      subtype Catch_Time_Range is Integer range 1 .. 4;
+      subtype Catch_Time_Range is Integer range 1 .. 3;
       package Random_Catch is new Ada.Numerics.Discrete_Random(Catch_Time_Range);
       -- Random number generator
       G: Random_Catch.Generator;
@@ -82,7 +82,7 @@ procedure Simulation is
                exit;
             else
                --Put_Line(ESC & "[93m" & "F: Buffer is occupied at the moment, wait a while.");
-               delay Duration(1.0);
+               delay Duration(2.0);
             end select;
          end loop;
       end loop;
