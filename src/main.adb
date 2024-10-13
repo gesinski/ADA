@@ -113,8 +113,7 @@ procedure Simulation is
             Put_Line(ESC & "[96m" & "T: " & Trader_Name(Trader_Nb) & " took " & Cooler_Name(Cooler_Type_Number) &
                        " number " & Integer'Image(Cooler_Number) & ESC & "[0m");
          else
-            Put_Line(ESC & "[96m" & "T: " & Trader_Name(Trader_Nb) & " couldn't take " & Cooler_Name(Cooler_Type_Number) &
-                       " number " & Integer'Image(Cooler_Number) & " because it is VIP set only" & ESC & "[0m");
+            Put_Line(ESC & "[96m" & "T: " & Trader_Name(Trader_Nb) & " didn't took any cooler: " & Trader_Name(Trader_Nb) & " said 'OMG NO!'" & ESC & "[0m");
          end if;
       end loop;
    end Trader;

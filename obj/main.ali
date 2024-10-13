@@ -23,7 +23,7 @@ RV NO_IMPLICIT_LOOPS
 RV MAX_TASK_ENTRIES=1
 RV MAX_TASKS=1+
 
-U simulation%b		main.adb		418cd171 NE OO SU
+U simulation%b		main.adb		0673a8f0 NE OO SU
 W ada%s			ada.ads			ada.ali
 Z ada.calendar.delays%s	a-caldel.adb		a-caldel.ali
 W ada.characters%s	a-charac.ads		a-charac.ali
@@ -39,8 +39,8 @@ Z system.concat_2%s	s-conca2.adb		s-conca2.ali
 Z system.concat_4%s	s-conca4.adb		s-conca4.ali
 Z system.concat_5%s	s-conca5.adb		s-conca5.ali
 Z system.concat_6%s	s-conca6.adb		s-conca6.ali
+Z system.concat_7%s	s-conca7.adb		s-conca7.ali
 Z system.concat_8%s	s-conca8.adb		s-conca8.ali
-Z system.concat_9%s	s-conca9.adb		s-conca9.ali
 Z system.img_int%s	s-imgint.ads		s-imgint.ali
 Z system.parameters%s	s-parame.adb		s-parame.ali
 Z system.random_numbers%s  s-rannum.adb		s-rannum.ali
@@ -76,15 +76,15 @@ D interfac.ads		20210520051132 edec285f interfaces%s
 D i-c.ads		20210520051132 d9beded9 interfaces.c%s
 D i-cstrin.ads		20210520051132 341d0ddf interfaces.c.strings%s
 D i-cstrea.ads		20210520051132 e53d8b8e interfaces.c_streams%s
-D main.adb		20241013175214 26f22f7a simulation%b
+D main.adb		20241013180356 610d56fb simulation%b
 D system.ads		20210520051136 2ffa5114 system%s
 D s-atacco.ads		20210520051132 4c36d12f system.address_to_access_conversions%s
 D s-conca2.ads		20210520051132 02a0d7d0 system.concat_2%s
 D s-conca4.ads		20210520051132 7e642b20 system.concat_4%s
 D s-conca5.ads		20210520051132 875e432e system.concat_5%s
 D s-conca6.ads		20210520051132 d2c72db2 system.concat_6%s
+D s-conca7.ads		20210520051132 fcc75b1f system.concat_7%s
 D s-conca8.ads		20210520051132 e3074dd7 system.concat_8%s
-D s-conca9.ads		20210520051132 dc4a3424 system.concat_9%s
 D s-crtl.ads		20210520051132 0ebbdb71 system.crtl%s
 D s-exctab.ads		20210520051132 54135002 system.exception_table%s
 D s-ficobl.ads		20210520051132 078245e4 system.file_control_block%s
@@ -131,8 +131,8 @@ X 4 a-charac.ads
 X 5 a-chlat1.ads
 18K24*Latin_1 296e27 26|2w21 2r49
 53e4*ESC{character} 26|71r16 71r96 75r19 76r67 106r16 106r84 113r22 114r68
-. 116r22 117r100 176r16 176r57 181r25 182r51 186r25 186r98 193r25 194r66
-. 202r25 202r93
+. 116r22 116r144 175r16 175r57 180r25 181r51 185r25 185r98 192r25 193r66
+. 201r25 201r93
 X 8 a-inteio.ads
 18K13*Integer_Text_IO[20|46] 26|3w10
 X 10 a-numeri.ads
@@ -143,45 +143,45 @@ X 11 a-nudira.ads
 52V13 Random{integer} 26|73s47[56] 108s41[86] 109s46[89]
 61U14 Reset<47|103p14> 26|66s23[56] 101s26[86] 102s24[89]
 X 12 a-nudira.adb
-53V16 Random[47|86]{integer} 48|402b13[26|56]
-65V16 Random[47|86]{integer} 48|402b13[26|89]
+53V16 Random[47|86]{integer} 48|402b13[26|89]
+65V16 Random[47|86]{integer} 48|402b13[26|56]
 X 19 a-textio.ads
 58K13*Text_IO 725e16 26|1w10 1r27
-506U14*Put_Line 26|71s7 75s10 106s7 113s13 116s13 169s13 172s10 176s7 181s16
-. 186s16 193s16 202s16
+506U14*Put_Line 26|71s7 75s10 106s7 113s13 116s13 168s13 171s10 175s7 180s16
+. 185s16 192s16 201s16
 X 22 interfac.ads
 79M9*Unsigned_32
 82M9*Unsigned_64
 X 26 main.adb
-6U11*Simulation 6b11 219l5 219t15
-10i4 Number_Of_Fishermen{integer} 14r49 47r19 213r18
+6U11*Simulation 6b11 218l5 218t15
+10i4 Number_Of_Fishermen{integer} 14r49 47r19 212r18
 11i4 Number_Of_Coolers{integer} 15r46
-12i4 Number_Of_Traders{integer} 16r46 48r19 97r41 216r18
-14I12 Fisherman_Type{integer} 19r34 30r31 42r31 64r32 125r35 127r43 131r34
-. 137r19 147r35 158r19 168r19 179r35 195r25
-15I12 Cooler_Type{integer} 23r33 44r32 89r65 127r30 132r29 139r22 156r36
-. 191r36
+12i4 Number_Of_Traders{integer} 16r46 48r19 97r41 215r18
+14I12 Fisherman_Type{integer} 19r34 30r31 42r31 64r32 124r35 126r43 130r34
+. 136r19 146r35 157r19 167r19 178r35 194r25
+15I12 Cooler_Type{integer} 23r33 44r32 89r65 126r30 131r29 138r22 155r36
+. 190r36
 16I12 Trader_Type{integer} 36r37 93r18 100r38
-19a4 Seafood_Name(string) 71r58 75r49 170r24 181r55 186r74
-23a4 Cooler_Name(string) 113r81 116r90 193r65 202r71
+19a4 Seafood_Name(string) 71r58 75r49 169r24 180r55 185r74
+23a4 Cooler_Name(string) 113r81 192r65 201r71
 29T14 Fisherman 31l8 31e17 47r43 54b14 81l8 81t17
-30Y13 Start 30>19 30>47 64b14 70l11 70t16 214s12
+30Y13 Start 30>19 30>47 64b14 70l11 70t16 213s12
 30i19 Seafood{14I12} 68r35
 30i47 Catch_Time{integer} 69r19
-35T14 Trader 37l8 37e14 48r41 84b14 120l8 120t14
-36Y13 Start 36>19 36>50 100b14 105l11 105t16 217s12
+35T14 Trader 37l8 37e14 48r41 84b14 119l8 119t14
+36Y13 Start 36>19 36>50 100b14 105l11 105t16 216s12
 36i19 Trader_Number{16I12} 103r23
 36i50 Purchase_Time{integer} 104r22
-40T14 Buffer 45l8 45e14 49r7 123b14 209l8 209t14
-42Y13 Store 42>19 42>47 78s12 179b17 188l14 188t19
-42i19 Seafood{14I12} 180r26 181r68 183r24 183r44 186r87
-42i47 Number{integer} 182r41
-44Y13 Deliver 44>21 44<45 111s12 191b17 205l14 205t21
-44i21 Cooler{15I12} 192r28 193r77 194r55 196r61 197r61 199r40 200r30 200r55
-. 202r83
-44i45 Number{integer} 199m16 199r16 203m16 203r16
-47a4 F(29T14) 214r7
-48a4 T(35T14) 217r7
+40T14 Buffer 45l8 45e14 49r7 122b14 208l8 208t14
+42Y13 Store 42>19 42>47 78s12 178b17 187l14 187t19
+42i19 Seafood{14I12} 179r26 180r68 182r24 182r44 185r87
+42i47 Number{integer} 181r41
+44Y13 Deliver 44>21 44<45 111s12 190b17 204l14 204t21
+44i21 Cooler{15I12} 191r28 192r77 193r55 195r61 196r61 198r40 199r30 199r55
+. 201r83
+44i45 Number{integer} 198m16 198r16 202m16 202r16
+47a4 F(29T14) 213r7
+48a4 T(35T14) 216r7
 49t4 B{40T14} 78r10 111r10
 55I15 Catch_Time_Range{integer} 56r64
 56K15 Random_Catch[11|44] 58r10 66r10 73r34
@@ -197,37 +197,37 @@ X 26 main.adb
 89K15 Random_Cooler[11|44] 92r11 102r10 109r32
 91r7 G{11|50R9[86]} 101r32 108r48
 92r7 GC{11|50R9[89]} 102r30 109r53
-93i7 Trader_Nb{16I12} 103m10 106r58 113r57 116r57
-94i7 Cooler_Number{integer} 111m40 112r14 114r51 117r51
+93i7 Trader_Nb{16I12} 103m10 106r58 113r57 116r57 116r112
+94i7 Cooler_Number{integer} 111m40 112r14 114r51
 95i7 Purchase{integer} 104m10
-96i7 Cooler_Type_Number{integer} 109m10 111r20 113r93 116r102
-97a7 Trader_Name(string) 106r46 113r45 116r45
+96i7 Cooler_Type_Number{integer} 109m10 111r20 113r93
+97a7 Trader_Name(string) 106r46 113r45 116r45 116r100
 100i20 Trader_Number{16I12}
 100i51 Purchase_Time{integer}
-124i7 Storage_Capacity{integer} 149r27
-125A12 Storage_Type(integer)<integer> 126r16
-126a7 Storage{125A12} 159r16 169r63 183m16 183r36 196m19 196r33
-127a7 Cooler_Content(integer) 140r19 141r44 159r29 196r46 197r46
-131a7 Max_Cooler_Content(integer) 138m13 140r42 141m19
-132a7 Cooler_Number(integer) 194r41 199r26 200m16 200r41
-133i7 In_Storage{integer} 149r13 172r68 184m16 184r30 197m19 197r33
-135U17 Setup_Variables 135b17 145l11 145t26 177s7
-137i14 W{14I12} 138r32 140r37 140r61 141r38 141r62
-139i17 Z{15I12} 140r34 141r59
-147V16 Can_Store{boolean} 147b16 147>26 154l11 154t20 180s16
-147i26 Seafood{14I12}
-156V16 Can_Deliver{boolean} 156b16 156>28 164l11 164t22 192s16
-156i28 Cooler{15I12} 159r44
-158i14 W{14I12} 159r24 159r52
-166U17 Storage_Contents 166b17 173l11 173t27 189s10 206s10
-168i14 W{14I12} 169r71 170r37
-179i23 Seafood{14I12}
-179i51 Number{integer}
-191i25 Cooler{15I12}
-191i49 Number{integer}
-195i20 W{14I12} 196r27 196r41 196r69 197r69
-213i8 I{integer} 214r9 214r18
-216i8 J{integer} 217r9 217r18
+123i7 Storage_Capacity{integer} 148r27
+124A12 Storage_Type(integer)<integer> 125r16
+125a7 Storage{124A12} 158r16 168r63 182m16 182r36 195m19 195r33
+126a7 Cooler_Content(integer) 139r19 140r44 158r29 195r46 196r46
+130a7 Max_Cooler_Content(integer) 137m13 139r42 140m19
+131a7 Cooler_Number(integer) 193r41 198r26 199m16 199r41
+132i7 In_Storage{integer} 148r13 171r68 183m16 183r30 196m19 196r33
+134U17 Setup_Variables 134b17 144l11 144t26 176s7
+136i14 W{14I12} 137r32 139r37 139r61 140r38 140r62
+138i17 Z{15I12} 139r34 140r59
+146V16 Can_Store{boolean} 146b16 146>26 153l11 153t20 179s16
+146i26 Seafood{14I12}
+155V16 Can_Deliver{boolean} 155b16 155>28 163l11 163t22 191s16
+155i28 Cooler{15I12} 158r44
+157i14 W{14I12} 158r24 158r52
+165U17 Storage_Contents 165b17 172l11 172t27 188s10 205s10
+167i14 W{14I12} 168r71 169r37
+178i23 Seafood{14I12}
+178i51 Number{integer}
+190i25 Cooler{15I12}
+190i49 Number{integer}
+194i20 W{14I12} 195r27 195r41 195r69 196r69
+212i8 I{integer} 213r9 213r18
+215i8 J{integer} 216r9 216r18
 X 47 s-rannum.ads
 77V13*Random{22|79M9} 48|224i21
 78V13*Random{22|82M9} 48|224i21
