@@ -198,7 +198,7 @@ procedure Simulation is
                Number := Cooler_Number(Cooler);
                Cooler_Number(Cooler) := Cooler_Number(Cooler) + 1;
             else
-               Put_Line(ESC & "[91m" & "Wholesaler: Not enough seafood for " & Cooler_Name(Cooler) & ESC & "[0m");
+               Put_Line(ESC & "[91m" & "Wholesaler: Not enough seafood for " & Cooler_Name(Cooler) & " to be sold" & ESC & "[0m");
                Number := 0;
             end if;
          end Deliver;
