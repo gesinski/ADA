@@ -52,7 +52,7 @@ procedure Simulation is
 
    -- Fisherman Task Body --
    task body Fisherman is
-      subtype Catch_Time_Range is Integer range 1 .. 3;
+      subtype Catch_Time_Range is Integer range 1 .. 4;
       package Random_Catch is new Ada.Numerics.Discrete_Random(Catch_Time_Range);
       -- Random number generator
       G: Random_Catch.Generator;
@@ -75,8 +75,16 @@ procedure Simulation is
          Put_Line(ESC & "[93m" & "F: Caught " & Seafood_Name(Fisherman_Type_Number)
                   & " number "  & Integer'Image(Seafood_Number) & ESC & "[0m");
          -- Store the catch
-         B.Store(Fisherman_Type_Number, Seafood_Number);
-         Seafood_Number := Seafood_Number + 1;
+         loop
+            select
+               B.Store(Fisherman_Type_Number, Seafood_Number);
+               Seafood_Number := Seafood_Number + 1;
+               exit;
+            else
+               --Put_Line(ESC & "[93m" & "F: Buffer is occupied at the moment, wait a while.");
+               delay Duration(1.0);
+            end select;
+         end loop;
       end loop;
    end Fisherman;
 
@@ -202,7 +210,7 @@ procedure Simulation is
                Number := 0;
             end if;
          end Deliver;
-         Storage_Contents;
+         --Storage_Contents;
 
       end loop;
    end Buffer;
