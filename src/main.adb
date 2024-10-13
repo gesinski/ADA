@@ -9,7 +9,7 @@ with Ada.Numerics.Discrete_Random;
 procedure Simulation is
 
    ----GLOBAL VARIABLES---
-
+   -- test
    Number_Of_Producers: constant Integer := 5;
    Number_Of_Assemblies: constant Integer := 3;
    Number_Of_Consumers: constant Integer := 2;
