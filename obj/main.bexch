@@ -1,17 +1,17 @@
 [GENERATED OBJECT FILE]
 b__main.o
 [PROJECT FILES]
-C:\sem3\prog\Programming languages\ADA\ADA\adaproject.gpr
-20241008104248 6d8a26504a6db4a17a024cbc79d72296
+C:\Users\patry\Documents\GitHub\ADA\adaproject.gpr
+20241013162122 42ef717c3775219f02d9a9ed8434283e
 [BOUND OBJECT FILES]
-C:\sem3\prog\Programming languages\ADA\ADA\obj\main.o
+C:\Users\patry\Documents\GitHub\ADA\obj\main.o
 [GENERATED SOURCE FILES]
 b__main.ads
 b__main.adb
 b__main.ali
 [RESULTING OPTIONS]
--LC:\sem3\prog\Programming languages\ADA\ADA\obj\
--LC:\sem3\prog\Programming languages\ADA\ADA\obj\
+-LC:\Users\patry\Documents\GitHub\ADA\obj\
+-LC:\Users\patry\Documents\GitHub\ADA\obj\
 -LC:/gnat/2021/lib/gcc/x86_64-w64-mingw32/10.3.1/adalib/
 -static
 -static-libgcc

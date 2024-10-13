@@ -324,9 +324,9 @@ package body ada_main is
    end;
 
 --  BEGIN Object file/option list
-   --   C:\sem3\prog\Programming languages\ADA\ADA\obj\main.o
-   --   -LC:\sem3\prog\Programming languages\ADA\ADA\obj\
-   --   -LC:\sem3\prog\Programming languages\ADA\ADA\obj\
+   --   C:\Users\patry\Documents\GitHub\ADA\obj\main.o
+   --   -LC:\Users\patry\Documents\GitHub\ADA\obj\
+   --   -LC:\Users\patry\Documents\GitHub\ADA\obj\
    --   -LC:/gnat/2021/lib/gcc/x86_64-w64-mingw32/10.3.1/adalib/
    --   -static
    --   -lgnarl

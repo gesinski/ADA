@@ -172,7 +172,7 @@ procedure Simulation is
       end Storage_Contents;
 
    begin
-      Put_Line(ESC & "[91m" & "B: Buffer initialized" & ESC & "[0m");
+      Put_Line(ESC & "[91m" & "Wholesaler: started working" & ESC & "[0m");
       Setup_Variables;
       loop
          accept Store(Seafood: in Fisherman_Type; Number: in Integer) do
@@ -182,14 +182,14 @@ procedure Simulation is
                Storage(Seafood) := Storage(Seafood) + 1;
                In_Storage := In_Storage + 1;
             else
-               Put_Line(ESC & "[91m" & "B: Storage full, can't store " & Seafood_Name(Seafood) & ESC & "[0m");
+               Put_Line(ESC & "[91m" & "Wholesaler: Storage full, Fisherman realese " & Seafood_Name(Seafood) & ESC & "[0m");
             end if;
          end Store;
          Storage_Contents;
 
          accept Deliver(Cooler: in Cooler_Type; Number: out Integer) do
             if Can_Deliver(Cooler) then
-               Put_Line(ESC & "[91m" & "B: Delivered cooler " & Cooler_Name(Cooler) & " number " &
+               Put_Line(ESC & "[91m" & "Wholesaler: Delivered cooler " & Cooler_Name(Cooler) & " number " &
                           Integer'Image(Cooler_Number(Cooler)) & ESC & "[0m");
                for W in Fisherman_Type loop
                   Storage(W) := Storage(W) - Cooler_Content(Cooler, W);
@@ -198,7 +198,7 @@ procedure Simulation is
                Number := Cooler_Number(Cooler);
                Cooler_Number(Cooler) := Cooler_Number(Cooler) + 1;
             else
-               Put_Line(ESC & "[91m" & "B: Not enough seafood for " & Cooler_Name(Cooler) & ESC & "[0m");
+               Put_Line(ESC & "[91m" & "Wholesaler: Not enough seafood for " & Cooler_Name(Cooler) & ESC & "[0m");
                Number := 0;
             end if;
          end Deliver;
