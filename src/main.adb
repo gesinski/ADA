@@ -109,8 +109,13 @@ procedure Simulation is
          Cooler_Type_Number := Random_Cooler.Random(GC);
          -- Take a cooler for the trader
          B.Deliver(Cooler_Type_Number, Cooler_Number);
-         Put_Line(ESC & "[96m" & "T: " & Trader_Name(Trader_Nb) & " took " & Cooler_Name(Cooler_Type_Number) &
-                  " number " & Integer'Image(Cooler_Number) & ESC & "[0m");
+         if (Cooler_Number /= 0) then
+            Put_Line(ESC & "[96m" & "T: " & Trader_Name(Trader_Nb) & " took " & Cooler_Name(Cooler_Type_Number) &
+                       " number " & Integer'Image(Cooler_Number) & ESC & "[0m");
+         else
+            Put_Line(ESC & "[96m" & "T: " & Trader_Name(Trader_Nb) & " couldn't take " & Cooler_Name(Cooler_Type_Number) &
+                       " number " & Integer'Image(Cooler_Number) & " because it is VIP set only" & ESC & "[0m");
+         end if;
       end loop;
    end Trader;
 
