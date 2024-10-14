@@ -185,7 +185,7 @@ procedure Simulation is
       loop
          accept Store(Seafood: in Fisherman_Type; Number: in Integer) do
             if Can_Store(Seafood) then
-               Put_Line(ESC & "[91m" & "B: Stored " & Seafood_Name(Seafood) & " number " &
+               Put_Line(ESC & "[91m" & "Wholesaler: Stored " & Seafood_Name(Seafood) & " number " &
                           Integer'Image(Number) & ESC & "[0m");
                Storage(Seafood) := Storage(Seafood) + 1;
                In_Storage := In_Storage + 1;
