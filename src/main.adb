@@ -138,7 +138,7 @@ procedure Simulation is
       Max_Cooler_Content: array (Fisherman_Type) of Integer;
       Cooler_Number: array (Cooler_Type) of Integer := (1, 1, 1);
       In_Storage: Integer := 0;
-
+      freshnessOfSeafood : Integer := 0;
       procedure Setup_Variables is
       begin
          for W in Fisherman_Type loop
@@ -183,35 +183,54 @@ procedure Simulation is
       Put_Line(ESC & "[91m" & "Wholesaler: started working" & ESC & "[0m");
       Setup_Variables;
       loop
-         accept Store(Seafood: in Fisherman_Type; Number: in Integer) do
-            if Can_Store(Seafood) then
-               Put_Line(ESC & "[91m" & "Wholesaler: Stored " & Seafood_Name(Seafood) & " number " &
-                          Integer'Image(Number) & ESC & "[0m");
-               Storage(Seafood) := Storage(Seafood) + 1;
-               In_Storage := In_Storage + 1;
-            else
-               Put_Line(ESC & "[91m" & "Wholesaler: Storage full, Fisherman realese " & Seafood_Name(Seafood) & ESC & "[0m");
-            end if;
-         end Store;
-         Storage_Contents;
+         select
+            accept Store(Seafood: in Fisherman_Type; Number: in Integer) do
+               if Can_Store(Seafood) then
+                  Put_Line(ESC & "[91m" & "Wholesaler: Stored " & Seafood_Name(Seafood) & " number " &
+                             Integer'Image(Number) & ESC & "[0m");
+                  Storage(Seafood) := Storage(Seafood) + 1;
+                  In_Storage := In_Storage + 1;
 
-         accept Deliver(Cooler: in Cooler_Type; Number: out Integer) do
-            if Can_Deliver(Cooler) then
-               Put_Line(ESC & "[91m" & "Wholesaler: Delivered cooler " & Cooler_Name(Cooler) & " number " &
-                          Integer'Image(Cooler_Number(Cooler)) & ESC & "[0m");
-               for W in Fisherman_Type loop
-                  Storage(W) := Storage(W) - Cooler_Content(Cooler, W);
-                  In_Storage := In_Storage - Cooler_Content(Cooler, W);
-               end loop;
-               Number := Cooler_Number(Cooler);
-               Cooler_Number(Cooler) := Cooler_Number(Cooler) + 1;
-            else
-               Put_Line(ESC & "[91m" & "Wholesaler: Not enough seafood for " & Cooler_Name(Cooler) & " to be sold" & ESC & "[0m");
-               Number := 0;
-            end if;
-         end Deliver;
+                  for W in Fisherman_Type loop
+                     if Storage(W) >= 10 then
+                        Storage(W) := Storage(W) - 3;
+                        In_Storage := In_Storage - 3;
+                        Put_Line(ESC & "[91m" & "Wholesaler: There is too much " & Seafood_Name(W) & ", 3 of them got thrown away");
+                     end if;
+                  end loop;
+               else
+                  Put_Line(ESC & "[91m" & "Wholesaler: Storage full, Fisherman realese " & Seafood_Name(Seafood) & ESC & "[0m");
+               end if;
+            end Store;
+            Storage_Contents;
+         or
+            accept Deliver(Cooler: in Cooler_Type; Number: out Integer) do
+               if Can_Deliver(Cooler) then
+                  Put_Line(ESC & "[91m" & "Wholesaler: Delivered cooler " & Cooler_Name(Cooler) & " number " &
+                             Integer'Image(Cooler_Number(Cooler)) & ESC & "[0m");
+                  for W in Fisherman_Type loop
+                     Storage(W) := Storage(W) - Cooler_Content(Cooler, W);
+                     In_Storage := In_Storage - Cooler_Content(Cooler, W);
+                  end loop;
+                  Number := Cooler_Number(Cooler);
+                  Cooler_Number(Cooler) := Cooler_Number(Cooler) + 1;
+               else
+                  freshnessOfSeafood := freshnessOfSeafood + 1;
+                  if freshnessOfSeafood > 8 then
+                     freshnessOfSeafood := 0;
+                     Put_Line(ESC & "[91m" & "Wholesaler: Some of seafood got rotten and poisoned everything");
+                     for W in Fisherman_Type loop
+                        Storage(W) := 0;
+                     end loop;
+                     In_Storage := 0;
+                  else
+                     Put_Line(ESC & "[91m" & "Wholesaler: Not enough seafood for " & Cooler_Name(Cooler) & " to be sold" & ESC & "[0m");
+                     Number := 0;
+                  end if;
+               end if;
+            end Deliver;
+         end select;
          --Storage_Contents;
-
       end loop;
    end Buffer;
 
