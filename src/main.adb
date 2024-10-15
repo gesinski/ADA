@@ -3,13 +3,14 @@ with Ada.Characters.Latin_1; use Ada.Characters.Latin_1;
 with Ada.Integer_Text_IO;
 with Ada.Numerics.Discrete_Random;
 
-procedure Simulation is
+procedure main is
 
    -----GLOBAL VARIABLES----
 
    Number_Of_Fishermen: constant Integer := 5;
    Number_Of_Coolers: constant Integer := 3;
    Number_Of_Traders: constant Integer := 2;
+
 
    subtype Fisherman_Type is Integer range 1 .. Number_Of_Fishermen;
    subtype Cooler_Type is Integer range 1 .. Number_Of_Coolers;
@@ -30,6 +31,10 @@ procedure Simulation is
       entry Start(Seafood: in Fisherman_Type; Catch_Time: in Integer);
    end Fisherman;
 
+   task type Cat is
+      entry Start;
+   end Cat;
+
    -- Trader takes an arbitrary cooler of seafood from the buffer
    -- The cooler's contents are randomly chosen
    task type Trader is
@@ -42,19 +47,57 @@ procedure Simulation is
       entry Store(Seafood: in Fisherman_Type; Number: in Integer);
       -- Deliver a cooler (provided there is enough seafood)
       entry Deliver(Cooler: in Cooler_Type; Number: out Integer);
+      entry DeleteAll(Seafood: in Fisherman_Type);
    end Buffer;
 
    F: array (1 .. Number_Of_Fishermen) of Fisherman;
    T: array (1 .. Number_Of_Traders) of Trader;
    B: Buffer;
+   C: Cat;
+
 
    ----TASK DEFINITIONS----
 
-   -- Fisherman Task Body --
+task body Cat is
+   subtype Wait_Time_Range is Integer range 7 .. 12;
+   package Random_Wait is new Ada.Numerics.Discrete_Random(Wait_Time_Range);
+   package Random_Fisherman is new Ada.Numerics.Discrete_Random(Fisherman_Type);
+
+   G: Random_Wait.Generator;
+   GF: Random_Fisherman.Generator;
+   Entered: Boolean;
+
+   Random_Time: Duration;
+   Seafood_To_Remove: Fisherman_Type;
+begin
+   accept Start do
+      Random_Wait.Reset(G);
+      Random_Fisherman.Reset(GF);
+   end Start;
+
+   Put_Line(ESC & "[95m" & "C: Started wandering around the storage" & ESC & "[0m");
+      loop
+         Entered := false;
+      Random_Time := Duration(Random_Wait.Random(G));
+      select
+         delay Random_Time;
+         Put_Line(ESC & "[95m" & "C: Gets into the storage" & ESC & "[0m");
+         Entered := true;
+      then abort
+         delay Duration(10.0);
+            Put_Line(ESC & "[95m" & "C: Has seen a mouse outside and ran for it" & ESC & "[0m");
+      end select;
+         if Entered = true then
+            Seafood_To_Remove := Random_Fisherman.Random(GF);
+            B.DeleteAll(Seafood_To_Remove);
+            Put_Line(ESC & "[95m" & "C: Ate all the " & Seafood_Name(Seafood_To_Remove) & ESC & "[0m");
+         end if;
+   end loop;
+end Cat;
+
    task body Fisherman is
       subtype Catch_Time_Range is Integer range 1 .. 3;
       package Random_Catch is new Ada.Numerics.Discrete_Random(Catch_Time_Range);
-      -- Random number generator
       G: Random_Catch.Generator;
       Fisherman_Type_Number: Integer;
       Seafood_Number: Integer;
@@ -74,14 +117,13 @@ procedure Simulation is
          delay Random_Time;
          Put_Line(ESC & "[93m" & "F: Caught " & Seafood_Name(Fisherman_Type_Number)
                   & " number "  & Integer'Image(Seafood_Number) & ESC & "[0m");
-         -- Store the catch
          loop
             select
                B.Store(Fisherman_Type_Number, Seafood_Number);
                Seafood_Number := Seafood_Number + 1;
                exit;
             else
-               --Put_Line(ESC & "[93m" & "F: Buffer is occupied at the moment, wait a while.");
+               Put_Line(ESC & "[93m" & "F: Buffer is occupied at the moment, wait a while.");
                delay Duration(2.0);
             end select;
          end loop;
@@ -229,8 +271,13 @@ procedure Simulation is
                   end if;
                end if;
             end Deliver;
+
+         or
+            accept DeleteAll(Seafood: in Fisherman_Type) do
+               Storage(Seafood) := 0;
+            end DeleteAll;
+
          end select;
-         --Storage_Contents;
       end loop;
    end Buffer;
 
@@ -242,4 +289,5 @@ begin
    for J in 1 .. Number_Of_Traders loop
       T(J).Start(J, 12);
    end loop;
-end Simulation;
+   C.Start;
+end main;
