@@ -47,7 +47,7 @@ procedure Simulation is
       entry Store(Seafood: in Fisherman_Type; Number: in Integer);
       -- Deliver a cooler (provided there is enough seafood)
       entry Deliver(Cooler: in Cooler_Type; Number: out Integer);
-      entry DeleteAll(Seafood: in Fisherman_Type);
+      entry Cat_In_Storage(Seafood: in Fisherman_Type);
    end Buffer;
 
    F: array (1 .. Number_Of_Fishermen) of Fisherman;
@@ -58,42 +58,45 @@ procedure Simulation is
 
    ----TASK DEFINITIONS----
 
-task body Cat is
-   subtype Wait_Time_Range is Integer range 7 .. 12;
-   package Random_Wait is new Ada.Numerics.Discrete_Random(Wait_Time_Range);
-   package Random_Fisherman is new Ada.Numerics.Discrete_Random(Fisherman_Type);
+   task body Cat is
+      subtype Wait_Time_Range is Integer range 7 .. 12;
+      package Random_Wait is new Ada.Numerics.Discrete_Random(Wait_Time_Range);
+      package Random_Fisherman is new Ada.Numerics.Discrete_Random(Fisherman_Type);
 
-   G: Random_Wait.Generator;
-   GF: Random_Fisherman.Generator;
-   Entered: Boolean;
+      G: Random_Wait.Generator;
+      GF: Random_Fisherman.Generator;
+      Entered: Boolean;
 
-   Random_Time: Duration;
-   Seafood_To_Remove: Fisherman_Type;
-begin
-   accept Start do
-      Random_Wait.Reset(G);
-      Random_Fisherman.Reset(GF);
-   end Start;
+      Random_Time: Duration;
+      Seafood_To_Remove: Fisherman_Type;
+   begin
+      accept Start do
+         Random_Wait.Reset(G);
+         Random_Fisherman.Reset(GF);
+      end Start;
 
-   Put_Line(ESC & "[95m" & "C: Started wandering around the storage" & ESC & "[0m");
+      Put_Line(ESC & "[95m" & "C: Started wandering around the storage" & ESC & "[0m");
       loop
          Entered := false;
-      Random_Time := Duration(Random_Wait.Random(G));
-      select
-         delay Random_Time;
-         Put_Line(ESC & "[95m" & "C: Gets into the storage" & ESC & "[0m");
-         Entered := true;
-      then abort
-         delay Duration(10.0);
-            Put_Line(ESC & "[95m" & "C: Has seen a mouse outside and ran for it" & ESC & "[0m");
-      end select;
+         Random_Time := Duration(Random_Wait.Random(G));
+         select
+            delay Random_Time;
+            Entered := true;
+         then abort
+            delay Duration(10.0);
+            Put_Line(ESC & "[95m" & "C: Gets into the storage" & ESC & "[0m");
+            Put_Line(ESC & "[95m" & "C: Run out of the storage, beacuse has seen a mouse outside" & ESC & "[0m");
+            --Put_Line(ESC & "[95m" & "C: Has seen a mouse outside and ran for it" & ESC & "[0m");
+         end select;
          if Entered = true then
             Seafood_To_Remove := Random_Fisherman.Random(GF);
-            B.DeleteAll(Seafood_To_Remove);
-            Put_Line(ESC & "[95m" & "C: Ate all the " & Seafood_Name(Seafood_To_Remove) & ESC & "[0m");
+            B.Cat_In_Storage(Seafood_To_Remove);
+            --Put_Line(ESC & "[95m" & "C: Ate all the " & Seafood_Name(Seafood_To_Remove) & ESC & "[0m");
+            Put_Line(ESC & "[95m" & "C: Gets into the storage" & ESC & "[0m");
+            Put_Line(ESC & "[95m" & "C: Ate all the " & Seafood_Name(Seafood_To_Remove) &  " and ran out of the storage" & ESC & "[0m");
          end if;
-   end loop;
-end Cat;
+      end loop;
+   end Cat;
 
    task body Fisherman is
       subtype Catch_Time_Range is Integer range 1 .. 3;
@@ -221,6 +224,13 @@ end Cat;
          Put_Line("|   Total seafood in storage: " & Integer'Image(In_Storage));
       end Storage_Contents;
 
+      procedure Product_destruction(Seafood: Fisherman_Type) is
+      begin
+         --Put_Line(ESC & "[91m" & "Wholesaler: Cat destroyed all " & Seafood_Name(Seafood) & ESC & "[0m");
+         Storage(Seafood) := 0;
+      end Product_destruction;
+
+
    begin
       Put_Line(ESC & "[91m" & "Wholesaler: started working" & ESC & "[0m");
       Setup_Variables;
@@ -271,11 +281,10 @@ end Cat;
                   end if;
                end if;
             end Deliver;
-
          or
-            accept DeleteAll(Seafood: in Fisherman_Type) do
-               Storage(Seafood) := 0;
-            end DeleteAll;
+            accept Cat_In_Storage(Seafood: in Fisherman_Type) do
+               Product_destruction(Seafood);
+            end Cat_In_Storage;
 
          end select;
       end loop;
