@@ -134,7 +134,7 @@ procedure Simulation is
 
    -- Trader Task Body --
    task body Trader is
-      subtype Purchase_Time_Range is Integer range 4 .. 8;
+      subtype Purchase_Time_Range is Integer range 3 .. 6; --???
       package Random_Purchase is new Ada.Numerics.Discrete_Random(Purchase_Time_Range);
 
       -- Each trader picks a random cooler from the buffer
