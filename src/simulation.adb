@@ -81,17 +81,16 @@ procedure Simulation is
          Random_Time := Duration(Random_Wait.Random(G));
          select
             delay Random_Time;
+            Put_Line(ESC & "[95m" & "C: Is near the storage" & ESC & "[0m");
             Entered := true;
          then abort
             delay Duration(10.0);
             Put_Line(ESC & "[95m" & "C: Gets into the storage" & ESC & "[0m");
             Put_Line(ESC & "[95m" & "C: Run out of the storage, beacuse has seen a mouse outside" & ESC & "[0m");
-            --Put_Line(ESC & "[95m" & "C: Has seen a mouse outside and ran for it" & ESC & "[0m");
          end select;
          if Entered = true then
             Seafood_To_Remove := Random_Fisherman.Random(GF);
             B.Cat_In_Storage(Seafood_To_Remove);
-            --Put_Line(ESC & "[95m" & "C: Ate all the " & Seafood_Name(Seafood_To_Remove) & ESC & "[0m");
             Put_Line(ESC & "[95m" & "C: Gets into the storage" & ESC & "[0m");
             Put_Line(ESC & "[95m" & "C: Ate all the " & Seafood_Name(Seafood_To_Remove) &  " and ran out of the storage" & ESC & "[0m");
          end if;
@@ -126,7 +125,7 @@ procedure Simulation is
                Seafood_Number := Seafood_Number + 1;
                exit;
             else
-               Put_Line(ESC & "[93m" & "F: Buffer is occupied at the moment, wait a while.");
+                  Put_Line(ESC & "[93m" & "F: " & Seafood_Name(Fisherman_Type_Number) & " is ready to be sold, but buffer is occupied at the moment.");
                delay Duration(2.0);
             end select;
          end loop;
@@ -164,9 +163,9 @@ procedure Simulation is
          B.Deliver(Cooler_Type_Number, Cooler_Number);
          if (Cooler_Number /= 0) then
             Put_Line(ESC & "[96m" & "T: " & Trader_Name(Trader_Nb) & " took " & Cooler_Name(Cooler_Type_Number) &
-                       " number " & Integer'Image(Cooler_Number) & ESC & "[0m");
+                       " number " & Integer'Image(Cooler_Number) & " out of all" & ESC & "[0m");
          else
-            Put_Line(ESC & "[96m" & "T: " & Trader_Name(Trader_Nb) & " didn't take any cooler, beacuse " & Trader_Name(Trader_Nb) & " didn't need new seafood" & ESC & "[0m");
+            Put_Line(ESC & "[96m" & "T: " & Trader_Name(Trader_Nb) & " didn't take any cooler, beacuse didn't need new seafood" & ESC & "[0m");
          end if;
       end loop;
    end Trader;
@@ -184,6 +183,7 @@ procedure Simulation is
       Cooler_Number: array (Cooler_Type) of Integer := (1, 1, 1);
       In_Storage: Integer := 0;
       freshnessOfSeafood : Integer := 0;
+
       procedure Setup_Variables is
       begin
          for W in Fisherman_Type loop
@@ -218,15 +218,14 @@ procedure Simulation is
       procedure Storage_Contents is
       begin
          for W in Fisherman_Type loop
-            Put_Line("|   Storage contents: " & Integer'Image(Storage(W)) & " "
-                     & Seafood_Name(W));
+            Put_Line(ESC & "[90m" & "|   Storage contents: " & Integer'Image(Storage(W)) & " "
+                     & Seafood_Name(W) & ESC & "[0m");
          end loop;
-         Put_Line("|   Total seafood in storage: " & Integer'Image(In_Storage));
+         Put_Line(ESC & "[90m" & "|   Total seafood in storage: " & Integer'Image(In_Storage) & ESC & "[0m");
       end Storage_Contents;
 
       procedure Product_destruction(Seafood: Fisherman_Type) is
       begin
-         --Put_Line(ESC & "[91m" & "Wholesaler: Cat destroyed all " & Seafood_Name(Seafood) & ESC & "[0m");
          Storage(Seafood) := 0;
       end Product_destruction;
 
@@ -276,7 +275,7 @@ procedure Simulation is
                      end loop;
                      In_Storage := 0;
                   else
-                     Put_Line(ESC & "[91m" & "Wholesaler: Not enough seafood for " & Cooler_Name(Cooler) & " to be sold" & ESC & "[0m");
+                     Put_Line(ESC & "[91m" & "Wholesaler: Not enough seafood for " & Cooler_Name(Cooler) & " to be sold" & ESC & "[0m"); --???
                      Number := 0;
                   end if;
                end if;
