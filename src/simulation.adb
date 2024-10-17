@@ -3,7 +3,7 @@ with Ada.Characters.Latin_1; use Ada.Characters.Latin_1;
 with Ada.Integer_Text_IO;
 with Ada.Numerics.Discrete_Random;
 
-procedure main is
+procedure Simulation is
 
    -----GLOBAL VARIABLES----
 
@@ -290,4 +290,4 @@ begin
       T(J).Start(J, 12);
    end loop;
    C.Start;
-end main;
+end Simulation;
