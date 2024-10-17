@@ -86,7 +86,7 @@ procedure Simulation is
          then abort
             delay Duration(10.0);
             Put_Line(ESC & "[95m" & "C: Gets into the storage" & ESC & "[0m");
-            Put_Line(ESC & "[95m" & "C: Run out of the storage, beacuse has seen a mouse outside" & ESC & "[0m");
+            Put_Line(ESC & "[95m" & "C: Runs out of the storage, beacuse has seen a mouse outside" & ESC & "[0m");
          end select;
          if Entered = true then
             Seafood_To_Remove := Random_Fisherman.Random(GF);
@@ -125,7 +125,7 @@ procedure Simulation is
                Seafood_Number := Seafood_Number + 1;
                exit;
             else
-                  Put_Line(ESC & "[93m" & "F: " & Seafood_Name(Fisherman_Type_Number) & " is ready to be sold, but buffer is occupied at the moment.");
+                  Put_Line(ESC & "[93m" & "F: " & Seafood_Name(Fisherman_Type_Number) & " is ready to be stored, but buffer is occupied at the moment.");
                delay Duration(2.0);
             end select;
          end loop;
@@ -134,7 +134,7 @@ procedure Simulation is
 
    -- Trader Task Body --
    task body Trader is
-      subtype Purchase_Time_Range is Integer range 3 .. 6; --???
+      subtype Purchase_Time_Range is Integer range 3 .. 6;
       package Random_Purchase is new Ada.Numerics.Discrete_Random(Purchase_Time_Range);
 
       -- Each trader picks a random cooler from the buffer
@@ -165,7 +165,7 @@ procedure Simulation is
             Put_Line(ESC & "[96m" & "T: " & Trader_Name(Trader_Nb) & " took " & Cooler_Name(Cooler_Type_Number) &
                        " number " & Integer'Image(Cooler_Number) & " out of all" & ESC & "[0m");
          else
-            Put_Line(ESC & "[96m" & "T: " & Trader_Name(Trader_Nb) & " didn't take any cooler, beacuse didn't need new seafood" & ESC & "[0m");
+            Put_Line(ESC & "[96m" & "T: " & Trader_Name(Trader_Nb) & " didn't take any cooler, beacuse his order wasn't ready" & ESC & "[0m");
          end if;
       end loop;
    end Trader;
@@ -226,6 +226,7 @@ procedure Simulation is
 
       procedure Product_destruction(Seafood: Fisherman_Type) is
       begin
+         In_Storage := In_Storage - Storage(Seafood);
          Storage(Seafood) := 0;
       end Product_destruction;
 
@@ -243,10 +244,10 @@ procedure Simulation is
                   In_Storage := In_Storage + 1;
 
                   for W in Fisherman_Type loop
-                     if Storage(W) >= 10 then
-                        Storage(W) := Storage(W) - 3;
-                        In_Storage := In_Storage - 3;
-                        Put_Line(ESC & "[91m" & "Wholesaler: There is too much " & Seafood_Name(W) & ", 3 of them got thrown away");
+                     if Storage(W) >= 8 then
+                        Storage(W) := Storage(W) - 2;
+                        In_Storage := In_Storage - 2;
+                        Put_Line(ESC & "[91m" & "Wholesaler: There is too much " & Seafood_Name(W) & ", 2 of them got thrown away");
                      end if;
                   end loop;
                else
@@ -266,8 +267,10 @@ procedure Simulation is
                   Number := Cooler_Number(Cooler);
                   Cooler_Number(Cooler) := Cooler_Number(Cooler) + 1;
                else
-                  freshnessOfSeafood := freshnessOfSeafood + 1;
-                  if freshnessOfSeafood > 8 then
+                  if In_Storage >= 30 then
+                     freshnessOfSeafood := freshnessOfSeafood + 1;
+                  end if;
+                  if freshnessOfSeafood >= 3 then
                      freshnessOfSeafood := 0;
                      Put_Line(ESC & "[91m" & "Wholesaler: Some of seafood got rotten and poisoned everything");
                      for W in Fisherman_Type loop
@@ -275,7 +278,7 @@ procedure Simulation is
                      end loop;
                      In_Storage := 0;
                   else
-                     Put_Line(ESC & "[91m" & "Wholesaler: Not enough seafood for " & Cooler_Name(Cooler) & " to be sold" & ESC & "[0m"); --???
+                     Put_Line(ESC & "[91m" & "Wholesaler: Not enough seafood for " & Cooler_Name(Cooler) & " to be sold" & ESC & "[0m");
                      Number := 0;
                   end if;
                end if;
